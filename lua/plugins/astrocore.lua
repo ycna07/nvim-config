@@ -77,6 +77,8 @@ return {
         -- this is useful for naming menus
         -- ["<Leader>b"] = { desc = "Buffers" },
 
+        -- ["<Leader>c"]
+
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
       },

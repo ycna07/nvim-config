@@ -37,6 +37,16 @@ if vim.g.neovide then
   vim.api.nvim_set_keymap("n", "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>", { silent = true })
 end
 
+if vim.env.KITTY_WINDOW_ID then
+  require("kitty-scrollback").setup {
+    myconfig = {
+      kitty_get_text = {
+        ansi = true,
+      },
+    },
+  }
+end
+
 -- This will run last in the setup process.
 -- This is just pure lua so anything that doesn't
 -- fit in the normal config locations above can go here
