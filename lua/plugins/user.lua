@@ -9,6 +9,76 @@ return {
   --    "xiyaowong/transparent.nvim",
   -- },
   -- For `plugins/markview.lua` users.
+  -- { "rimeinn/rime.nvim", lazy = false },
+  {
+    url = "https://codeberg.org/andyg/leap.nvim.git",
+    dependencies = {
+      "tpope/vim-repeat",
+    },
+    opts = {
+      preview = function(ch0, ch1, ch2)
+        return not (ch1:match "%s" or (ch0:match "%a" and ch1:match "%a" and ch2:match "%a"))
+      end,
+      equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" },
+    },
+    keys = {
+
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        "<Plug>(leap)",
+        desc = "leap",
+      },
+      {
+        "S",
+        mode = { "n" },
+        "<Plug>(leap-from-window)",
+      },
+      {
+        "R",
+        mode = { "x", "o" },
+        function()
+          require("leap.treesitter").select {
+            opts = require("leap.user").with_traversal_keys("R", "r"),
+          }
+        end,
+      },
+    },
+  },
+  {
+    "ray-x/go.nvim",
+    dependencies = { -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = function()
+      require("go").setup "opts"
+      local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.go",
+        callback = function() require("go.format").goimports() end,
+        group = format_sync_grp,
+      })
+      return {
+        -- lsp_keymaps = false,
+        -- other options
+      }
+    end,
+    -- event = { "CmdlineEnter" },
+    -- ft = { "go", "gomod" },
+    -- build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
+  {
+    "kylechui/nvim-surround",
+    -- version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
   {
     "keaising/im-select.nvim",
     config = function()
