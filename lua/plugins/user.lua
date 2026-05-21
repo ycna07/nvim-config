@@ -1,6 +1,14 @@
 -- You can also add or configure plugins by creating files in this `plugins/` folder
 -- PLEASE REMOVE THE EXAMPLES YOU HAVE NO INTEREST IN BEFORE ENABLING THIS FILE
 -- Here are some examples:
+local im_default_command
+if vim.fn.has "win32" == 1 or vim.fn.has "win64" == 1 or vim.fn.has "wsl" == 1 then
+  im_default_command = "im-select.exe"
+elseif vim.fn.has "mac" == 1 or vim.fn.has "macunix" == 1 then
+  im_default_command = "macism"
+else
+  im_default_command = "fcitx5-remote"
+end
 
 ---@type LazySpec
 return {
@@ -129,7 +137,7 @@ return {
         -- For Windows/WSL, default: "im-select.exe"
         -- For macOS, default: "macism"
         -- For Linux, default: "fcitx5-remote" or "fcitx-remote" or "ibus"
-        default_command = "fcitx5-remote",
+        default_command = im_default_command,
 
         -- Restore the default input method state when the following events are triggered
         -- "VimEnter" and "FocusGained" were removed for causing problems, add it by your needs
