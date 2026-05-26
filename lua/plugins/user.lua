@@ -13,6 +13,13 @@ end
 ---@type LazySpec
 return {
   {
+    "Mythos-404/xmake.nvim",
+    version = "^3",
+    lazy = true,
+    event = "BufReadPost",
+    config = true,
+  },
+  {
     "saghen/blink.cmp",
     optional = true,
     dependencies = { "fang2hou/blink-copilot" },
