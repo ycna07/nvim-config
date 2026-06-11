@@ -19,90 +19,35 @@ return {
     event = "BufReadPost",
     config = true,
   },
-  {
-    "saghen/blink.cmp",
-    optional = true,
-    dependencies = { "fang2hou/blink-copilot" },
-    opts = {
-      sources = {
-        default = { "copilot" },
-        providers = {
-          copilot = {
-            name = "copilot",
-            module = "blink-copilot",
-            score_offset = 100,
-            async = true,
-          },
-        },
-      },
-    },
-  },
-  {
-    "zbirenbaum/copilot.lua",
-    requires = {
-      "copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
-    },
-    cmd = "Copilot",
-    event = "InsertEnter",
-    opts = {
-      copilot_model = "gpt-4o-copilot",
-      suggestion = { enabled = true, auto_trigger = true },
-      panel = { enabled = false },
-    },
-    config = true,
-  },
-  {
-    "yetone/avante.nvim",
-    ---@module 'avante'
-    ---@type avante.Config
-    opts = function(_, existing_opts) -- existing_opts 是其他地方已有的配置
-      local new_opts = {
-        provider = "github",
-        github = {
-          endpoint = "https://models.github.ai/inference",
-          model = "openai/gpt-5-mini",
-          timeout = 30000,
-          extra_request_body = {
-            temperature = 0.75,
-            max_tokens = 32768,
-          },
-        },
-      }
-      -- 深度合并，existing_opts 优先级更高（避免覆盖别人已设的重要字段）
-      return vim.tbl_deep_extend("force", new_opts, existing_opts or {})
-      -- 如果希望当前配置覆盖已有配置，则交换参数顺序：
-      -- return vim.tbl_deep_extend("force", existing_opts or {}, new_opts)
-    end,
-  },
 
-  {
-    "aurora0x27/popup.nvim",
-    event = { "UIEnter" },
-    opts = {
-      views = {
-
-        cmdline = {
-          width = 0.35,
-          col = 0.5,
-          row = 0.35,
-          relative = "editor",
-        },
-      },
-    },
-  },
-  {
-    "chrisgrieser/nvim-rip-substitute",
-    cmd = "RipSubstitute",
-    opts = {},
-    keys = {
-      {
-        "<leader>rs",
-        function() require("rip-substitute").sub() end,
-        mode = { "n", "x" },
-        desc = " rip substitute",
-      },
-    },
-  },
+  -- {
+  --   "aurora0x27/popup.nvim",
+  --   event = { "UIEnter" },
+  --   opts = {
+  --     views = {
+  --
+  --       cmdline = {
+  --         width = 0.35,
+  --         col = 0.5,
+  --         row = 0.35,
+  --         relative = "editor",
+  --       },
+  --     },
+  --   },
+  -- },
+  -- {
+  --   "chrisgrieser/nvim-rip-substitute",
+  --   cmd = "RipSubstitute",
+  --   opts = {},
+  --   keys = {
+  --     {
+  --       "<leader>rs",
+  --       function() require("rip-substitute").sub() end,
+  --       mode = { "n", "x" },
+  --       desc = " rip substitute",
+  --     },
+  --   },
+  -- },
   {
     "OXY2DEV/markview.nvim",
     lazy = false,
