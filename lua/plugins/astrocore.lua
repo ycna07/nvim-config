@@ -13,14 +13,14 @@ return {
       large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
       autopairs = true, -- enable autopairs at start
       cmp = true, -- enable completion at start
-      diagnostics = { virtual_text = false, virtual_lines = true }, -- diagnostic settings on startup
+      diagnostics = { virtual_text = true, virtual_lines = false }, -- diagnostic settings on startup
       highlighturl = true, -- highlight URLs at start
       notifications = true, -- enable notifications at start
     },
     -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
     diagnostics = {
-      virtual_text = false,
-      underline = true,
+      virtual_text = true,
+      underline = false,
     },
     -- passed to `vim.filetype.add`
     filetypes = {
@@ -46,7 +46,6 @@ return {
       },
       g = { -- vim.g.<key>
         ai_accept = function()
-          -- 检查是否有建议可以接受
           if require("copilot.suggestion").is_visible() then
             require("copilot.suggestion").accept_line()
             return true
@@ -85,6 +84,9 @@ return {
 
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
+        -- ["[x"] = {
+        --   function() require("nvim-treesitter-textobjects.select").select_textobject("") end,
+        -- },
       },
     },
   },
