@@ -16,7 +16,7 @@ require("lazy").setup({
 } --[[@as LazySpec]], {
   -- Configure any other `lazy.nvim` configuration options here
   install = { colorscheme = { "astrotheme", "habamax" } },
-  ui = { backdrop = 100 },
+  ui = { backdrop = 60 },
   performance = {
     rtp = {
       -- disable some rtp plugins, add more to your liking
@@ -28,5 +28,8 @@ require("lazy").setup({
         "zipPlugin",
       },
     },
+  },
+  dev = {
+    path = "~/Workspace/lua",
   },
 } --[[@as LazyConfig]])
