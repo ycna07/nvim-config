@@ -1,17 +1,48 @@
 -- You can also add or configure plugins by creating files in this `plugins/` folder
 -- PLEASE REMOVE THE EXAMPLES YOU HAVE NO INTEREST IN BEFORE ENABLING THIS FILE
 -- Here are some examples:
-local im_default_command
-if vim.fn.has "win32" == 1 or vim.fn.has "win64" == 1 or vim.fn.has "wsl" == 1 then
-  im_default_command = "im-select.exe"
-elseif vim.fn.has "mac" == 1 or vim.fn.has "macunix" == 1 then
-  im_default_command = "macism"
-else
-  im_default_command = "fcitx5-remote"
-end
+-- local im_default_command
+-- if vim.fn.has "win32" == 1 or vim.fn.has "win64" == 1 or vim.fn.has "wsl" == 1 then
+--   im_default_command = "im-select.exe"
+-- elseif vim.fn.has "mac" == 1 or vim.fn.has "macunix" == 1 then
+--   im_default_command = "macism"
+-- else
+--   -- im_default_command = "fcitx5-remote"
+--   im_default_command = "dbus-send"
+-- end
 
 ---@type LazySpec
 return {
+  {
+    "yutkat/confirm-quit.nvim",
+    event = "CmdlineEnter",
+    opts = {},
+  },
+  {
+    "zbirenbaum/neodim",
+    event = "LspAttach",
+
+    config = function()
+      require("neodim").setup(
+        ---@type neodim.Options
+        {
+          disable = {
+            "PKGBUILD",
+          },
+          alpha = 0.5,
+        }
+      )
+    end,
+  },
+  { "akinsho/toggleterm.nvim", opts = {
+    hide_numbers = true,
+    direction = "float",
+  } },
+  { "nvim-neo-tree/neo-tree.nvim", opts = {
+    window = {
+      position = "float",
+    },
+  } },
   {
     "Joakker/lua-json5",
     lazy = true,
@@ -24,35 +55,6 @@ return {
     event = "BufReadPost",
     config = true,
   },
-
-  -- {
-  --   "aurora0x27/popup.nvim",
-  --   event = { "UIEnter" },
-  --   opts = {
-  --     views = {
-  --
-  --       cmdline = {
-  --         width = 0.35,
-  --         col = 0.5,
-  --         row = 0.35,
-  --         relative = "editor",
-  --       },
-  --     },
-  --   },
-  -- },
-  -- {
-  --   "chrisgrieser/nvim-rip-substitute",
-  --   cmd = "RipSubstitute",
-  --   opts = {},
-  --   keys = {
-  --     {
-  --       "<leader>rs",
-  --       function() require("rip-substitute").sub() end,
-  --       mode = { "n", "x" },
-  --       desc = " rip substitute",
-  --     },
-  --   },
-  -- },
   {
     "OXY2DEV/markview.nvim",
     lazy = false,
@@ -75,7 +77,10 @@ return {
     config = function() require("kitty-scrollback").setup() end,
   },
   {
-    "keaising/im-select.nvim",
+    -- "keaising/im-select.nvim",
+    "im-select.nvim",
+    name = "im-select.nvim",
+    dev = true,
     config = function()
       require("im_select").setup {
         -- IM will be set to `default_im_select` in `normal` mode
@@ -86,7 +91,8 @@ return {
         --               "1" for Fcitx
         --               "xkb:us::eng" for ibus
         -- You can use `im-select` or `fcitx5-remote -n` to get the IM's name
-        default_im_select = "keyboard-us",
+        default_im_select = "true",
+        -- default_im_select = "keyboard-us",
 
         -- Can be binary's name, binary's full path, or a table, e.g. 'im-select',
         -- '/usr/local/bin/im-select' for binary without extra arguments,
@@ -94,7 +100,9 @@ return {
         -- For Windows/WSL, default: "im-select.exe"
         -- For macOS, default: "macism"
         -- For Linux, default: "fcitx5-remote" or "fcitx-remote" or "ibus"
-        default_command = im_default_command,
+        -- default_command = im_default_command,
+        default_command = "rimectl",
+        -- default_command = "fcitx5-remote",
 
         -- Restore the default input method state when the following events are triggered
         -- "VimEnter" and "FocusGained" were removed for causing problems, add it by your needs
@@ -149,10 +157,35 @@ return {
       },
     },
   },
-  -- == Examples of Adding Plugins ==
+  {
+    "kylechui/nvim-surround",
+    version = "^4.0.0", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    -- Optional: See `:h nvim-surround.configuration` and `:h nvim-surround.setup` for details
+    config = function()
+      require("nvim-surround").setup {
+        -- Put your configuration here
+        -- keymaps = {
+        --     insert          = '<C-g>z',
+        --     insert_line     = 'gC-ggZ',
+        --     normal          = 'gz',
+        --     normal_cur      = 'gZ',
+        --     normal_line     = 'gzgz',
+        --     normal_cur_line = 'gZgZ',
+        --     visual          = 'gz',
+        --     visual_line     = 'gZ',
+        --     delete          = 'gzd',
+        --     change          = 'gzc',
+        --   }
+      }
+    end,
+  },
   "andweeb/presence.nvim",
   {
     "ray-x/lsp_signature.nvim",
+    opts = {
+      alpha = 0.3, -- make the dimmed text even dimmer
+    },
     event = "BufRead",
     config = function() require("lsp_signature").setup() end,
   },
@@ -160,8 +193,29 @@ return {
   -- customize dashboard options
   {
     "folke/snacks.nvim",
+    -- priority = 100,
     ---@type snacks.Config
     opts = {
+      input = { enabled = true },
+      bigfile = { enabled = true },
+      image = { doc = { enabled = true } },
+      picker = {
+        win = {
+          input = {
+            keys = {
+              ["<Tab>"] = { "list_down", mode = { "i", "n" } },
+              ["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
+              ["<c-k>"] = { "select_and_prev", mode = { "i", "n" } },
+              ["<c-j>"] = { "select_and_next", mode = { "i", "n" } },
+            },
+          },
+        },
+        layout = {
+          layout = {
+            backdrop = false,
+          },
+        },
+      },
       dashboard = {
         preset = {
           header = table.concat({
@@ -179,7 +233,6 @@ return {
           }, "\n"),
         },
       },
-      input = { enabled = true },
     },
 
     specs = {
