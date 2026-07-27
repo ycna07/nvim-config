@@ -14,6 +14,41 @@
 ---@type LazySpec
 return {
   {
+    "tnfru/nvim-venv-detector",
+    ft = "python",
+    event = "VimEnter",
+    config = function() require("venv_detector").setup() end,
+  },
+  {
+    "linux-cultist/venv-selector.nvim",
+    ft = "python",
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup()
+      -- require("scrollbar.handlers.gitsigns").setup()
+    end,
+  },
+  {
+    -- 性能上有缺陷，长按时圆点明显跟不上
+    "petertriho/nvim-scrollbar",
+    enabled = false,
+    lazy = true,
+    config = function()
+      require("scrollbar").setup {
+        show = true,
+        show_in_active_only = false,
+        set_highlights = true,
+        folds = 1000, -- handle folds, set to number to disable folds if no. of lines in buffer exceeds this
+        max_lines = false, -- disables if no. of lines in buffer exceeds this
+        hide_if_all_visible = false, -- Hides everything if all lines are visible
+        throttle_ms = 100,
+      }
+    end,
+  },
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+  {
     "yutkat/confirm-quit.nvim",
     event = "CmdlineEnter",
     opts = {},
@@ -210,11 +245,11 @@ return {
             },
           },
         },
-        layout = {
-          layout = {
-            backdrop = false,
-          },
-        },
+        -- layout = {
+        --   layout = {
+        --     backdrop = false,
+        --   },
+        -- },
       },
       dashboard = {
         preset = {
@@ -252,7 +287,7 @@ return {
     },
   },
   -- You can disable default plugins as follows:
-  { "max397574/better-escape.nvim", enabled = true },
+  { "max397574/better-escape.nvim", enabled = false },
   -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
   {
     "L3MON4D3/LuaSnip",
