@@ -38,6 +38,11 @@ vim.api.nvim_set_keymap(
   { silent = true }
 )
 vim.api.nvim_set_keymap("n", "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>", { silent = true })
+-- Ctrl+Shift+v paste
+vim.keymap.set({ "n", "i", "v" }, "<C-S-v>", function() vim.api.nvim_paste(vim.fn.getreg "+", false, -1) end)
+
+-- vim.keymap.set({ "n", "i", "v" }, "<C-Tab>", vim.cmd.bnext)
+-- vim.keymap.set({ "n", "i", "v" }, "<C-S-Tab>", vim.cmd.bprevious)
 
 -- Settings With Astro
 return {
@@ -47,7 +52,7 @@ return {
     options = {
       opt = { -- configure vim.opt options
         -- configure font
-        guifont = "JetBrainsMono Nerd Font Mono",
+        guifont = "Maple Mono",
         -- line spacing
         linespace = 0,
       },
