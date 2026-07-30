@@ -198,41 +198,7 @@ return {
       }
     end,
   },
-  {
-    url = "https://codeberg.org/andyg/leap.nvim.git",
-    dependencies = {
-      "tpope/vim-repeat",
-    },
-    opts = {
-      preview = function(ch0, ch1, ch2)
-        return not (ch1:match "%s" or (ch0:match "%a" and ch1:match "%a" and ch2:match "%a"))
-      end,
-      equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" },
-    },
-    keys = {
 
-      {
-        "s",
-        mode = { "n", "x", "o" },
-        "<Plug>(leap)",
-        desc = "leap",
-      },
-      {
-        "S",
-        mode = { "n" },
-        "<Plug>(leap-from-window)",
-      },
-      {
-        "R",
-        mode = { "x", "o" },
-        function()
-          require("leap.treesitter").select {
-            opts = require("leap.user").with_traversal_keys("R", "r"),
-          }
-        end,
-      },
-    },
-  },
   {
     "kylechui/nvim-surround",
     version = "^4.0.0", -- Use for stability; omit to use `main` branch for the latest features
