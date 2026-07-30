@@ -24,13 +24,6 @@ return {
     ft = "python",
   },
   {
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require("gitsigns").setup()
-      -- require("scrollbar.handlers.gitsigns").setup()
-    end,
-  },
-  {
     -- 性能上有缺陷，长按时圆点明显跟不上
     "petertriho/nvim-scrollbar",
     enabled = false,
