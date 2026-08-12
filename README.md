@@ -1,3 +1,6 @@
-## AI
-Agent: avante.nvim
-compeltion: copilot.lua 
+## session/workspace
+- [] all buffers and cursor pos
+- [] Marks
+- [] jumplist
+- [] undohistory
+- [] registers

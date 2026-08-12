@@ -2,53 +2,55 @@ return {
   {
     "esmuellert/codediff.nvim",
     cmd = "CodeDiff",
+    opts = {},
   },
   {
     "NeogitOrg/neogit",
     lazy = true,
     dependencies = {
-      -- Only one of these is needed.
-      -- "sindrets/diffview.nvim",        -- optional
-      "esmuellert/codediff.nvim", -- optional
-
-      -- For a custom log pager
-      "m00qek/baleia.nvim", -- optional
-
-      -- Only one of these is needed.
-      -- "nvim-telescope/telescope.nvim", -- optional
-      -- "ibhagwan/fzf-lua",              -- optional
-      -- "nvim-mini/mini.pick",           -- optional
-      "folke/snacks.nvim", -- optional
+      "esmuellert/codediff.nvim",
+      "m00qek/baleia.nvim",
+      "ibhagwan/fzf-lua",
     },
     cmd = "Neogit",
-    specs = {
+    keys = {
       {
-
-        "AstroNvim/astrocore",
-
-        opts = function(_, opts)
-          local maps = opts.mappings
-          maps.n["<Leader>gg"] = { "<cmd>Neogit<cr>", desc = "Show Neogit UI" }
-        end,
+        "<leader>gG",
+        mode = { "n", "v", "x" },
+        "<cmd>Neogit<cr>",
+        desc = "Show Neogit UI",
       },
     },
   },
-
   {
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup()
-      -- require("scrollbar.handlers.gitsigns").setup()
     end,
-    specs = {
+    keys = {
       {
-
-        "AstroNvim/astrocore",
-
-        opts = function(_, opts)
-          local maps = opts.mappings
-          maps.n["<Leader>gl"] = { function() require("gitsigns").blame_line() end, desc = "Git blame" }
+        "<leader>gl",
+        mode = { "n", "v" },
+        function()
+          require("gitsigns").blame_line()
         end,
+        desc = "Git blame",
+      },
+      {
+        "]c",
+        mode = { "n", "v" },
+        function()
+          require("gitsigns").nav_hunk("next")
+        end,
+        desc = "Next git hunk",
+      },
+      {
+        "[c",
+        mode = { "n", "v" },
+        function()
+          require("gitsigns").nav_hunk("prev")
+        end,
+        desc = "Next git hunk",
       },
     },
   },
