@@ -85,168 +85,176 @@ local function has_words_before()
 end
 
 return {
-  "saghen/blink.cmp",
-  dependencies = { { "L3MON4D3/LuaSnip", version = "v2.*" } },
+  {
+    "saghen/blink.cmp",
+    dependencies = { { "L3MON4D3/LuaSnip", version = "v2.*" } },
 
-  version = "1.*",
+    version = "1.*",
 
-  event = { "CmdlineEnter", "BufReadPre", "BufNewFile" },
-  -- AND/OR build from source
-  -- build = 'cargo build --release',
-  ---@module 'blink.cmp'
-  ---@type blink.cmp.Config
-  opts = {
-    enabled = function()
-      return not vim.tbl_contains({ "csv" }, vim.bo.filetype)
-    end,
-    snippets = { preset = "luasnip" },
-    sources = {
-      default = { "lsp", "path", "snippets", "buffer" },
-    },
-    keymap = {
-      ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
-      ["<Up>"] = { "select_prev", "fallback" },
-      ["<Down>"] = { "select_next", "fallback" },
-      ["<C-N>"] = { "select_next", "show" },
-      ["<C-P>"] = { "select_prev", "show" },
-      ["<C-J>"] = { "select_next", "fallback" },
-      ["<C-K>"] = { "select_prev", "fallback" },
-      ["<C-U>"] = { "scroll_documentation_up", "fallback" },
-      ["<C-D>"] = { "scroll_documentation_down", "fallback" },
-      ["<C-e>"] = { "hide", "fallback" },
-      ["<CR>"] = { "accept", "fallback" },
-      ["<Tab>"] = {
-        "select_next",
-        "snippet_forward",
-        function(cmp)
-          if has_words_before() or vim.api.nvim_get_mode().mode == "c" then
-            return cmp.show()
-          end
-        end,
-        "fallback",
+    event = { "CmdlineEnter", "BufReadPre", "BufNewFile" },
+    -- AND/OR build from source
+    -- build = 'cargo build --release',
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      enabled = function()
+        return not vim.tbl_contains({ "csv" }, vim.bo.filetype)
+      end,
+      snippets = { preset = "luasnip" },
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
       },
-      ["<S-Tab>"] = {
-        "select_prev",
-        "snippet_backward",
-        function(cmp)
-          if vim.api.nvim_get_mode().mode == "c" then
-            return cmp.show()
-          end
-        end,
-        "fallback",
-      },
-    },
-
-    fuzzy = { implementation = "prefer_rust" },
-    completion = {
-
-      accept = {
-        auto_brackets = { enabled = true },
-      },
-      list = { selection = { preselect = false, auto_insert = true } },
-      trigger = {
-        show_on_keyword = true,
-        show_on_trigger_character = true,
-        show_on_insert_on_trigger_character = true,
-        show_on_x_blocked_trigger_characters = {
-          "'",
-          '"',
-          "(",
-          "{",
-          "[",
+      keymap = {
+        ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<Up>"] = { "select_prev", "fallback" },
+        ["<Down>"] = { "select_next", "fallback" },
+        ["<C-N>"] = { "select_next", "show" },
+        ["<C-P>"] = { "select_prev", "show" },
+        ["<C-J>"] = { "select_next", "fallback" },
+        ["<C-K>"] = { "select_prev", "fallback" },
+        ["<C-U>"] = { "scroll_documentation_up", "fallback" },
+        ["<C-D>"] = { "scroll_documentation_down", "fallback" },
+        ["<C-e>"] = { "hide", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
+        ["<Tab>"] = {
+          "select_next",
+          "snippet_forward",
+          function(cmp)
+            if has_words_before() or vim.api.nvim_get_mode().mode == "c" then
+              return cmp.show()
+            end
+          end,
+          "fallback",
+        },
+        ["<S-Tab>"] = {
+          "select_prev",
+          "snippet_backward",
+          function(cmp)
+            if vim.api.nvim_get_mode().mode == "c" then
+              return cmp.show()
+            end
+          end,
+          "fallback",
         },
       },
-      menu = {
-        auto_show = function(ctx)
-          return ctx.mode ~= "cmdline"
-        end,
-        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
-        border = "rounded",
-        draw = {
-          treesitter = { "lsp" },
-          components = {
-            kind_icon = {
-              text = function(ctx)
-                return get_kind_icon(ctx).text
-              end,
-              highlight = function(ctx)
-                return get_kind_icon(ctx).highlight
-              end,
+
+      fuzzy = { implementation = "prefer_rust" },
+      completion = {
+
+        accept = {
+          auto_brackets = { enabled = true },
+        },
+        list = { selection = { preselect = false, auto_insert = true } },
+        trigger = {
+          show_on_keyword = true,
+          show_on_trigger_character = true,
+          show_on_insert_on_trigger_character = true,
+          show_on_x_blocked_trigger_characters = {
+            "'",
+            '"',
+            "(",
+            "{",
+            "[",
+          },
+        },
+        menu = {
+          auto_show = function(ctx)
+            return ctx.mode ~= "cmdline"
+          end,
+          winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+          border = "rounded",
+          draw = {
+            treesitter = { "lsp" },
+            components = {
+              kind_icon = {
+                text = function(ctx)
+                  return get_kind_icon(ctx).text
+                end,
+                highlight = function(ctx)
+                  return get_kind_icon(ctx).highlight
+                end,
+              },
             },
           },
         },
+        documentation = { auto_show = true },
       },
-      documentation = { auto_show = true },
+
+      cmdline = {
+        completion = { menu = { auto_show = true } },
+      },
+      signature = {
+        enabled = true,
+        trigger = {
+          -- Show the signature help automatically
+          enabled = true,
+          -- Show the signature help window after typing any of alphanumerics, `-` or `_`
+          show_on_keyword = false,
+          blocked_trigger_characters = {},
+          blocked_retrigger_characters = {},
+          -- Show the signature help window after typing a trigger character
+          show_on_trigger_character = true,
+          -- Show the signature help window when entering insert mode
+          show_on_insert = false,
+          -- Show the signature help window when the cursor comes after
+          -- a trigger character when entering insert mode
+          show_on_insert_on_trigger_character = true,
+        },
+        window = {
+          winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+        },
+      },
     },
 
-    cmdline = {
-      completion = { menu = { auto_show = true } },
-    },
-    signature = {
-      enabled = true,
-      trigger = {
-        -- Show the signature help automatically
-        enabled = true,
-        -- Show the signature help window after typing any of alphanumerics, `-` or `_`
-        show_on_keyword = false,
-        blocked_trigger_characters = {},
-        blocked_retrigger_characters = {},
-        -- Show the signature help window after typing a trigger character
-        show_on_trigger_character = true,
-        -- Show the signature help window when entering insert mode
-        show_on_insert = false,
-        -- Show the signature help window when the cursor comes after
-        -- a trigger character when entering insert mode
-        show_on_insert_on_trigger_character = true,
-      },
-      window = {
-        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+    opts_extend = { "sources.default" },
+    config = function(_, opts)
+      require("blink.cmp").setup(opts)
+    end,
+
+    specs = {
+      { -- disable blink icons if icons are disabled
+        "saghen/blink.cmp",
+        opts = function(_, opts)
+          if vim.g.icons_enabled == false then
+            if not opts.appearance then
+              opts.appearance = {}
+            end
+            opts.appearance.kind_icons = {
+              Text = "T",
+              Method = "M",
+              Function = "F",
+              Constructor = "C",
+              Field = "F",
+              Variable = "V",
+              Property = "P",
+              Class = "C",
+              Interface = "I",
+              Struct = "S",
+              Module = "M",
+              Unit = "U",
+              Value = "V",
+              Enum = "E",
+              EnumMember = "E",
+              Keyword = "K",
+              Constant = "C",
+              Snippet = "S",
+              Color = "C",
+              File = "F",
+              Reference = "R",
+              Folder = "F",
+              Event = "E",
+              Operator = "O",
+              TypeParameter = "T",
+            }
+          end
+        end,
       },
     },
   },
-
-  opts_extend = { "sources.default" },
-  config = function(_, opts)
-    require("blink.cmp").setup(opts)
-  end,
-
-  specs = {
-    { -- disable blink icons if icons are disabled
-      "saghen/blink.cmp",
-      opts = function(_, opts)
-        if vim.g.icons_enabled == false then
-          if not opts.appearance then
-            opts.appearance = {}
-          end
-          opts.appearance.kind_icons = {
-            Text = "T",
-            Method = "M",
-            Function = "F",
-            Constructor = "C",
-            Field = "F",
-            Variable = "V",
-            Property = "P",
-            Class = "C",
-            Interface = "I",
-            Struct = "S",
-            Module = "M",
-            Unit = "U",
-            Value = "V",
-            Enum = "E",
-            EnumMember = "E",
-            Keyword = "K",
-            Constant = "C",
-            Snippet = "S",
-            Color = "C",
-            File = "F",
-            Reference = "R",
-            Folder = "F",
-            Event = "E",
-            Operator = "O",
-            TypeParameter = "T",
-          }
-        end
-      end,
-    },
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    build = "make install_jsregexp",
   },
 }
