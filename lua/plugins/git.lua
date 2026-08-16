@@ -15,7 +15,7 @@ return {
     cmd = "Neogit",
     keys = {
       {
-        "<leader>gG",
+        "<leader>gg",
         mode = { "n", "v", "x" },
         "<cmd>Neogit<cr>",
         desc = "Show Neogit UI",

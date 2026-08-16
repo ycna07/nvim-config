@@ -22,7 +22,7 @@ vim.opt.shada = "!,'100,<50,s10,h,r/tmp/,r/private/"
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
-vim.opt.laststatus = 0
+vim.opt.laststatus = 2
 vim.opt.expandtab = true
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 4
@@ -43,22 +43,60 @@ end, { desc = "Find definitions with fzf-lua" })
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { desc = "Save file" })
 vim.keymap.set({ "n", "v" }, "<leader>c", ":close<CR>", { desc = "Close buffer" })
 vim.keymap.set({ "n", "v" }, "]d", function()
-  vim.diagnostic.jump({ count = 1, float = true })
+  vim.diagnostic.jump({
+    count = 1,
+    on_jump = function(diagnostic, bufnr)
+      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
+    end,
+  })
 end, { desc = "Next diagnostic" })
 vim.keymap.set({ "n", "v" }, "[d", function()
-  vim.diagnostic.jump({ count = -1, float = true })
-end, { desc = "Next diagnostic" })
+  vim.diagnostic.jump({
+    count = -1,
+    on_jump = function(diagnostic, bufnr)
+      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
+    end,
+  })
+end, { desc = "Last diagnostic" })
+
+vim.keymap.set({ "n", "v" }, "[e", function()
+  vim.diagnostic.jump({
+    count = -1,
+    on_jump = function(diagnostic, bufnr)
+      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
+    end,
+    severity = vim.diagnostic.severity.ERROR,
+  })
+end, { desc = "Last error" })
 vim.keymap.set({ "n", "v" }, "]e", function()
-  vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR })
+  vim.diagnostic.jump({
+    count = 1,
+    on_jump = function(diagnostic, bufnr)
+      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
+    end,
+    severity = vim.diagnostic.severity.ERROR,
+  })
 end, { desc = "Next error" })
 
 vim.keymap.set({ "n", "v" }, "]w", function()
-  vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.WARN })
+  vim.diagnostic.jump({
+    count = 1,
+    on_jump = function(diagnostic, bufnr)
+      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
+    end,
+    severity = vim.diagnostic.severity.WARN,
+  })
 end, { desc = "Next warning" })
 
 vim.keymap.set({ "n", "v" }, "[w", function()
-  vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.WARN })
-end, { desc = "Next warning" })
+  vim.diagnostic.jump({
+    count = -1,
+    on_jump = function(diagnostic, bufnr)
+      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
+    end,
+    severity = vim.diagnostic.severity.WARN,
+  })
+end, { desc = "Last warning" })
 
 vim.keymap.set({ "n" }, "<leader>q", ":q<cr>", { desc = "Toggle comment line" })
 vim.keymap.set({ "n" }, "<leader>/", "gcc", { remap = true, desc = "Toggle comment line" })
@@ -71,6 +109,52 @@ local function toggle_wrap()
   -- print("Word Wrap is " .. (new_wrap and "ON" or "OFF"))
 end
 
+local function toggle_virtual_text()
+  local current = vim.diagnostic.config().virtual_text
+  -- 注意：如果 virtual_text 是 table，则判断其是否启用
+  local new_state
+  if type(current) == "table" then
+    new_state = not current.enable
+  else
+    new_state = not current
+  end
+  vim.diagnostic.config({ virtual_text = new_state })
+  print("Virtual Text: " .. (new_state and "ON" or "OFF"))
+end
+
+local function toggle_inlay_hints()
+  local enabled = vim.lsp.inlay_hint.is_enabled()
+  vim.lsp.inlay_hint.enable(not enabled)
+  -- print("Inlay Hints: " .. (not enabled and "ON" or "OFF"))
+end
+
+-- 切换状态栏 (statusline)
+local function toggle_statusline()
+  local laststatus = vim.opt.laststatus:get()
+  if laststatus == 0 then
+    vim.opt.laststatus = 2 -- 始终显示
+  elseif laststatus == 2 then
+    vim.opt.laststatus = 0 -- 隐藏
+  else
+    vim.opt.laststatus = 2 -- 默认显示
+  end
+  -- print("Statusline: " .. (vim.opt.laststatus:get() == 2 and "ON" or "OFF"))
+end
+
+vim.keymap.set("n", "<leader>ui", function()
+  indent.enable(not indent.is_enabled())
+end, { desc = "Toggle indent guides" })
 vim.keymap.set("n", "<leader>uw", toggle_wrap, { desc = "Toggle wrap" })
+vim.keymap.set("n", "<leader>uv", toggle_virtual_text, { desc = "Toggle virtual text" })
+vim.keymap.set("n", "<leader>uh", toggle_inlay_hints, { desc = "Toggle inlay hints" })
+vim.keymap.set("n", "<leader>ul", toggle_statusline, { desc = "Toggle statusline" })
+
+-- treesitter
+vim.keymap.set({ "x", "o" }, "am", function()
+  require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+end)
+vim.keymap.set({ "x", "o" }, "im", function()
+  require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
+end)
 require("lazy_setup")
 require("polish")

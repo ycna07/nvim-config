@@ -45,7 +45,11 @@ return {
       auto_cmd = true,
     },
   },
-  { "https://gitlab.com/HiPhish/rainbow-delimiters.nvim" },
+  -- { "https://gitlab.com/HiPhish/rainbow-delimiters.nvim" },
+  {
+    "rainbow-delimiters.nvim",
+    dev = true,
+  },
   {
     "saghen/blink.indent",
     --- @module 'blink.indent'
@@ -137,6 +141,7 @@ return {
         python = { "isort", "black" },
         rust = { "rustfmt", lsp_format = "fallback" },
         javascript = { "prettierd", "prettier", stop_after_first = true },
+        typescript = { lsp_format = "fallback" },
       },
     },
   },

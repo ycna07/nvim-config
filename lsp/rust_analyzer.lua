@@ -1,5 +1,5 @@
 local rust_analyzer = {
-  filetypes = Lang.lsp_get_ft("rust_analyzer"),
+  filetypes = "rust",
   settings = {
     ["rust_analyzer"] = {
       diagnostics = {

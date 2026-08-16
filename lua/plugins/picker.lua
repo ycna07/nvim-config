@@ -78,6 +78,12 @@ return {
         end,
         desc = "Find buffers",
       }, -- 查找缓冲区
+
+      {
+        "<leader>fc",
+        "<cmd>FzfLua autocmds<cr>",
+        desc = "Find autocmds",
+      }, -- 查找帮助标签
       {
         "<leader>fh",
         function()
