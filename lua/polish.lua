@@ -27,7 +27,21 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.cmd.colorscheme("catppuccin-latte")
 
 -- auto start lsp
-vim.lsp.enable({ "pyrefly", "bashls", "tombi", "lua_ls", "clangd", "rust_analyzer", "denols", "jsonls" })
+vim.lsp.enable({
+  -- "ts_ls",
+  "vtsls",
+  "gopls",
+  "scheme-langserver",
+  "zls",
+  "pyrefly",
+  "bashls",
+  "tombi",
+  "lua_ls",
+  "clangd",
+  "rust_analyzer",
+  "denols",
+  "jsonls",
+})
 -- local configs = vim.lsp.get_config() --enable all lsp
 -- for name, _ in pairs(configs) do
 --     vim.lsp.enable(name)

@@ -147,7 +147,7 @@ end, { desc = "Toggle indent guides" })
 vim.keymap.set("n", "<leader>uw", toggle_wrap, { desc = "Toggle wrap" })
 vim.keymap.set("n", "<leader>uv", toggle_virtual_text, { desc = "Toggle virtual text" })
 vim.keymap.set("n", "<leader>uh", toggle_inlay_hints, { desc = "Toggle inlay hints" })
-vim.keymap.set("n", "<leader>ul", toggle_statusline, { desc = "Toggle statusline" })
+vim.keymap.set("n", "<leader>us", toggle_statusline, { desc = "Toggle statusline" })
 
 -- treesitter
 vim.keymap.set({ "x", "o" }, "am", function()
