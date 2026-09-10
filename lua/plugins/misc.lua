@@ -119,10 +119,21 @@ return {
       })
     end,
   },
-  { "akinsho/toggleterm.nvim", opts = {
-    hide_numbers = true,
-    direction = "float",
-  } },
+  {
+    "akinsho/toggleterm.nvim",
+    opts = {
+      hide_numbers = true,
+      direction = "float",
+    },
+    config = function(_, opts)
+      require("toggleterm").setup(opts)
+      -- Mapped here (not via lazy `keys`): lazy's key-loader does not re-dispatch
+      -- the special <C-'> key, so the mapping would never fire.
+      vim.keymap.set({ "n", "t" }, "<C-'>", function()
+        require("toggleterm").toggle()
+      end, { desc = "Toggle terminal" })
+    end,
+  },
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
