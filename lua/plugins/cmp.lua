@@ -105,6 +105,7 @@ return {
         default = { "lsp", "path", "snippets", "buffer" },
       },
       keymap = {
+        preset = "none",
         ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
         ["<Up>"] = { "select_prev", "fallback" },
         ["<Down>"] = { "select_next", "fallback" },
