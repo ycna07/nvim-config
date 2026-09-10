@@ -107,6 +107,13 @@ return {
       }, -- 查找 Git 文件
       { "<leader>lD", "<cmd>FzfLua diagnostics_workspace<CR>", desc = "Workspace Diagnostics" },
       { "<leader>ls", "<cmd>FzfLua lsp_document_symbols<cr>", { desc = "Document Symbols" } },
+      {
+        "<leader>uT",
+        function()
+          require("fzf-lua").colorschemes()
+        end,
+        desc = "Switch colorscheme",
+      },
     },
   },
 }
