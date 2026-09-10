@@ -2,7 +2,14 @@ return {
   {
     "esmuellert/codediff.nvim",
     cmd = "CodeDiff",
-    opts = {},
+    opts = {
+      keymaps = {
+        view = {
+          toggle_explorer = "<leader>e",
+          toggle_layout = "t",
+        },
+      },
+    },
   },
   {
     "NeogitOrg/neogit",
