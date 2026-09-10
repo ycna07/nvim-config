@@ -42,61 +42,30 @@ vim.keymap.set("n", "gd", function()
 end, { desc = "Find definitions with fzf-lua" })
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { desc = "Save file" })
 vim.keymap.set({ "n", "v" }, "<leader>c", ":close<CR>", { desc = "Close buffer" })
-vim.keymap.set({ "n", "v" }, "]d", function()
-  vim.diagnostic.jump({
-    count = 1,
-    on_jump = function(diagnostic, bufnr)
-      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
-    end,
-  })
-end, { desc = "Next diagnostic" })
-vim.keymap.set({ "n", "v" }, "[d", function()
-  vim.diagnostic.jump({
-    count = -1,
-    on_jump = function(diagnostic, bufnr)
-      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
-    end,
-  })
-end, { desc = "Last diagnostic" })
-
-vim.keymap.set({ "n", "v" }, "[e", function()
-  vim.diagnostic.jump({
-    count = -1,
-    on_jump = function(diagnostic, bufnr)
-      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
-    end,
-    severity = vim.diagnostic.severity.ERROR,
-  })
-end, { desc = "Last error" })
-vim.keymap.set({ "n", "v" }, "]e", function()
-  vim.diagnostic.jump({
-    count = 1,
-    on_jump = function(diagnostic, bufnr)
-      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
-    end,
-    severity = vim.diagnostic.severity.ERROR,
-  })
-end, { desc = "Next error" })
-
-vim.keymap.set({ "n", "v" }, "]w", function()
-  vim.diagnostic.jump({
-    count = 1,
-    on_jump = function(diagnostic, bufnr)
-      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
-    end,
-    severity = vim.diagnostic.severity.WARN,
-  })
-end, { desc = "Next warning" })
-
-vim.keymap.set({ "n", "v" }, "[w", function()
-  vim.diagnostic.jump({
-    count = -1,
-    on_jump = function(diagnostic, bufnr)
-      vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
-    end,
-    severity = vim.diagnostic.severity.WARN,
-  })
-end, { desc = "Last warning" })
+-- Diagnostic jump + float (latest API: vim.diagnostic.jump({ on_jump = ... }))
+local function diag_jump(key, desc, count, severity)
+  vim.keymap.set({ "n", "v" }, key, function()
+    vim.diagnostic.jump({
+      count = count,
+      severity = severity,
+      on_jump = function(diagnostic, bufnr)
+        if diagnostic then
+          vim.diagnostic.open_float({
+            bufnr = bufnr,
+            scope = "cursor",
+            focus = false,
+          })
+        end
+      end,
+    })
+  end, { desc = desc })
+end
+diag_jump("]d", "Next diagnostic", 1)
+diag_jump("[d", "Last diagnostic", -1)
+diag_jump("]e", "Next error", 1, vim.diagnostic.severity.ERROR)
+diag_jump("[e", "Last error", -1, vim.diagnostic.severity.ERROR)
+diag_jump("]w", "Next warning", 1, vim.diagnostic.severity.WARN)
+diag_jump("[w", "Last warning", -1, vim.diagnostic.severity.WARN)
 
 vim.keymap.set({ "n" }, "<leader>q", ":q<cr>", { desc = "Toggle comment line" })
 vim.keymap.set({ "n" }, "<leader>/", "gcc", { remap = true, desc = "Toggle comment line" })
