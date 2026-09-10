@@ -42,6 +42,14 @@ vim.keymap.set("n", "gd", function()
 end, { desc = "Find definitions with fzf-lua" })
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { desc = "Save file" })
 vim.keymap.set({ "n", "v" }, "<leader>c", ":close<CR>", { desc = "Close buffer" })
+vim.keymap.set({ "n" }, "<leader>bc", function()
+  local cur = vim.api.nvim_get_current_buf()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if buf ~= cur and vim.bo[buf].buflisted then
+      pcall(vim.api.nvim_buf_delete, buf, { force = false })
+    end
+  end
+end, { desc = "Close all other buffers" })
 -- Diagnostic jump + float (latest API: vim.diagnostic.jump({ on_jump = ... }))
 local function diag_jump(key, desc, count, severity)
   vim.keymap.set({ "n", "v" }, key, function()
