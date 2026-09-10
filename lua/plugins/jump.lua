@@ -2,6 +2,9 @@
 return {
   {
     "mawkler/demicolon.nvim",
+    -- Replaced by lua/repeat-motion.lua (CmdAtom-based, see polish.lua).
+    -- Its f/F/t/T maps were also overridden by flash.nvim's char mode.
+    enabled = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-treesitter/nvim-treesitter-textobjects",

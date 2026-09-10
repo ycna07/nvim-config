@@ -46,6 +46,11 @@ vim.lsp.enable({
 -- for name, _ in pairs(configs) do
 --     vim.lsp.enable(name)
 -- end
+
+-- `;`/`,` repeat the last motion (CmdAtom-based, replaces demicolon.nvim;
+-- works with flash.nvim which owns f/F/t/T)
+require("repeat-motion").setup()
+
 -- This will run last in the setup process.
 -- This is just pure lua so anything that doesn't
 -- fit in the normal config locations above can go here
