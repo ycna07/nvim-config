@@ -45,11 +45,11 @@ return {
       auto_cmd = true,
     },
   },
-  -- { "https://gitlab.com/HiPhish/rainbow-delimiters.nvim" },
-  {
-    "rainbow-delimiters.nvim",
-    dev = true,
-  },
+  { "https://gitlab.com/HiPhish/rainbow-delimiters.nvim" },
+  -- {
+  --   "rainbow-delimiters.nvim",
+  --   dev = true,
+  -- },
   {
     "saghen/blink.indent",
     --- @module 'blink.indent'
