@@ -190,10 +190,12 @@ return {
     opts = {
       formatters_by_ft = {
         lua = { "stylua" },
-        python = { "isort", "black" },
+        python = { "ruff", "isort", "black" },
         rust = { "rustfmt", lsp_format = "fallback" },
         javascript = { "prettierd", "prettier", stop_after_first = true },
         typescript = { lsp_format = "fallback" },
+        go = { lsp_format = "fallback" },
+        bash = { "shfmt", lsp_format = "fallback" },
       },
     },
   },
