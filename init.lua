@@ -43,7 +43,7 @@ vim.keymap.set("n", "gd", function()
   require("fzf-lua").lsp_definitions()
 end, { desc = "Find definitions with fzf-lua" })
 vim.keymap.set({ "n", "v" }, "<leader>w", ":w<CR>", { desc = "Save file" })
-vim.keymap.set({ "n", "v" }, "<leader>c", ":close<CR>", { desc = "Close buffer" })
+vim.keymap.set({ "n", "v" }, "<leader>q", ":bd<CR>", { desc = "Close buffer" })
 vim.keymap.set({ "n" }, "<leader>bc", function()
   local cur = vim.api.nvim_get_current_buf()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -84,7 +84,7 @@ diag_jump("[e", "Last error", -1, vim.diagnostic.severity.ERROR)
 diag_jump("]w", "Next warning", 1, vim.diagnostic.severity.WARN)
 diag_jump("[w", "Last warning", -1, vim.diagnostic.severity.WARN)
 
-vim.keymap.set({ "n" }, "<leader>q", ":q<cr>", { desc = "Toggle comment line" })
+vim.keymap.set({ "n" }, "<leader>c", ":close<cr>", { desc = "Toggle comment line" })
 vim.keymap.set({ "n" }, "<leader>/", "gcc", { remap = true, desc = "Toggle comment line" })
 vim.keymap.set({ "x" }, "<leader>/", "gc", { remap = true, desc = "Toggle comment" })
 
