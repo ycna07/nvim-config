@@ -52,13 +52,6 @@ vim.keymap.set({ "n" }, "<leader>bc", function()
     end
   end
 end, { desc = "Close all other buffers" })
--- <leader>bb pick a buffer from the tabline: a letter is shown on each buffer,
--- press it to switch (heirline-components' built-in buffer_picker)
-vim.keymap.set("n", "<leader>bb", function()
-  require("heirline-components.all").heirline.buffer_picker(function(bufnr)
-    vim.api.nvim_set_current_buf(bufnr)
-  end)
-end, { desc = "Pick buffer from tabline" })
 -- Diagnostic jump + float (latest API: vim.diagnostic.jump({ on_jump = ... }))
 local function diag_jump(key, desc, count, severity)
   vim.keymap.set({ "n", "v" }, key, function()
@@ -144,3 +137,5 @@ vim.keymap.set({ "x", "o" }, "im", function()
 end)
 require("lazy_setup")
 require("polish")
+-- Last: the colorscheme above must be applied before heirline reads its colors.
+require("statusline").setup()
